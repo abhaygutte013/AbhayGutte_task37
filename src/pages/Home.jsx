@@ -1,13 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import WorkoutDetails from "../components/WorkoutDetails";
 import WorkoutForm from "../components/WorkoutForm";
+
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
 
 function Home() {
   const { workouts, dispatch } = useWorkoutContext();
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const getWorkouts = async () => {
+    const fetchWorkouts = async () => {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/api/workouts`
@@ -22,26 +26,35 @@ function Home() {
           });
         }
       } catch (error) {
-        console.log("Error fetching workouts");
+        console.log("Could not fetch workouts");
       }
+
+      setLoading(false);
     };
 
-    getWorkouts();
+    fetchWorkouts();
   }, [dispatch]);
 
   return (
     <div className="home">
+
       <div className="workouts">
-        {workouts &&
+
+        {loading && <h3>Loading...</h3>}
+
+        {!loading &&
+          workouts &&
           workouts.map((workout) => (
             <WorkoutDetails
               key={workout._id}
               workout={workout}
             />
           ))}
+
       </div>
 
       <WorkoutForm />
+
     </div>
   );
 }
