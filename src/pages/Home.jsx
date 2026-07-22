@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import WorkoutDetails from "/src/components/WorkoutDetails.jsx";
-import WorkoutForm from "/src/components/WorkoutForm.jsx";
-import useWorkoutContext from "/src/hooks/useWorkoutContext.jsx";
+import WorkoutDetails from "../components/WorkoutDetails.jsx";
+import WorkoutForm from "../components/WorkoutForm.jsx";
+import useWorkoutContext from "../hooks/useWorkoutContext.jsx";
 
 const Home = () => {
   const { workouts, dispatch } = useWorkoutContext();
