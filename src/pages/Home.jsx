@@ -7,7 +7,7 @@ const Home = () => {
   const { workouts, dispatch } = useWorkoutContext();
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const response = await fetch("http://localhost:5000/api/workouts");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/workouts`)
       const json = await response.json();
       if (response.ok) {
         dispatch({
