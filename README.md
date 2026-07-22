@@ -1,80 +1,49 @@
-# Workout Budyyy
+# Workout Buddy (MERN Stack)
+## About
 
-This is my MERN Stack project.
-
-It is a simple workout tracker where we can add workouts, see all workouts and delete workouts.
-
-## Features
-
-- Add workout
-- Show all workouts
-- Delete workout
-- MongoDB Atlas database
-- React Context API
-- useReducer
-- Express API
-- Mongoose
+This is a simple MERN Stack project to manage workouts. Users can add, view and delete workout records. The frontend is made using React and the backend is made using Express.js, Node.js and MongoDB.
 
 ## Technologies Used
 
-- React
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- Context API
+* React
+* Vite
+* Node.js
+* Express.js
+* MongoDB Atlas
+* Mongoose
 
 ## Folder Structure
 
-
-WorkoutBuddy
+project
 │
 ├── backend
 └── frontend
 
 ## Backend Setup
 
-1.Go to backend folder:cd backend
-2.Install packages:npm install
-3.Create `.env`
+1. Open terminal.
+2. Go to backend folder:cd backend
+3. Install packages:npm install
+4. Create a `.env` file.
 
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 
-4.Start backend:npm run dev
+5. Start backend:npm run dev
+6.Backend runs on:http://localhost:5000
 
 ## Frontend Setup
 
-1.Go to frontend folder:cd frontend
-2.Install packages:npm install
-3.Start frontend:npm run dev
+1.Open another terminal.
+2.Go to frontend folder:cd frontend
+3.Install packages:npm install
+4.Create a `.env` file:VITE_API_URL=http://localhost:5000
+5.Run the frontend:npm run dev
+6.Frontend runs on:http://localhost:5173
 
-## Backend URL
+## Features
 
-http://localhost:5000
-
-## Frontend URL
-
-http://localhost:5173
-
-## API
-
-### Get Workouts
-
-GET /api/workouts
-
-### Add Workout
-
-POST /api/workouts
-
-### Delete Workout
-
-DELETE /api/workouts/:id
-
-
-## Output
-
-- Add workout using the form.
-- All workouts are shown on the left side.
-- Delete button removes a workout.
-- Data is stored in MongoDB Atlas.
+* View workouts
+* Add new workout
+* Delete workout
+* Store data in MongoDB Atlas
