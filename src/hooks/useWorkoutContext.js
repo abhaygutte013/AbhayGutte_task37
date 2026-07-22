@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { WorkoutsContext } from "/src/context/WorkoutContext.jsx";
+import { WorkoutContext } from "../context/WorkoutContext";
 
 const useWorkoutContext = () => {
   const context = useContext(WorkoutsContext);
@@ -10,4 +10,6 @@ const useWorkoutContext = () => {
   }
   return context;
 };
-export default useWorkoutContext;
+export const useWorkoutContext = () => {
+  return useContext(WorkoutContext);
+};
