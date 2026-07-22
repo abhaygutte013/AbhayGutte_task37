@@ -4,7 +4,7 @@ const {
   getWorkouts,
   createWorkout,
   deleteWorkout,
-} = require("../controllers/workoutController");
+} = require("/controllers/workoutController.js");
 const router = express.Router();
 // GET all workouts
 router.get("/", getWorkouts);
