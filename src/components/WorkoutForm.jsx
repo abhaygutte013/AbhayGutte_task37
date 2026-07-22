@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useWorkoutContext from "../hooks/useWorkoutContext";
+import useWorkoutContext from "/src/hooks/useWorkoutContext.js";
 
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutContext();
