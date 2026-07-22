@@ -1,41 +1,47 @@
-import { formatDistanceToNow } from "date-fns";
-import useWorkoutContext from "/src/hooks/useWorkoutContext.js";
+import { useWorkoutContext } from "../hooks/useWorkoutContext";
 
-const WorkoutDetails = ({ workout }) => {
+function WorkoutDetails({ workout }) {
   const { dispatch } = useWorkoutContext();
-  const handleClick = async () => {
-    const response = await fetch(
-      "http://localhost:5000/api/workouts/" + workout._id,
-      {
-        method: "DELETE",
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/workouts/${workout._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        dispatch({
+          type: "DELETE_WORKOUT",
+          payload: data,
+        });
       }
-    );
-    const json = await response.json();
-    if (response.ok) {
-      dispatch({
-        type: "DELETE_WORKOUT",
-        payload: json,
-      });
+    } catch (error) {
+      console.log("Delete failed");
     }
   };
+
   return (
     <div className="workout-details">
       <h4>{workout.title}</h4>
+
       <p>
-        <strong>Load (kg): </strong>
-        {workout.load}
+        <strong>Load:</strong> {workout.load} kg
       </p>
+
       <p>
-        <strong>Reps: </strong>
-        {workout.reps}
+        <strong>Reps:</strong> {workout.reps}
       </p>
-      <p>
-        {formatDistanceToNow(new Date(workout.createdAt), {
-          addSuffix: true,
-        })}
-      </p>
-      <span onClick={handleClick}>🗑️</span>
+
+      <button onClick={handleDelete}>
+        Delete
+      </button>
     </div>
   );
-};
+}
+
 export default WorkoutDetails;
