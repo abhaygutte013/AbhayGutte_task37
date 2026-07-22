@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
-import useWorkoutContext from "../hooks/useWorkoutContext";
+import useWorkoutContext from "/src/hooks/useWorkoutContext.js";
 
 const WorkoutDetails = ({ workout }) => {
   const { dispatch } = useWorkoutContext();
