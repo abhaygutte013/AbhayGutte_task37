@@ -2,8 +2,8 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const connectDB = require("./config/db");
-const workoutRoutes = require("./routes/workouts");
+const connectDB = require("/config/db.js");
+const workoutRoutes = require("/routes/workouts.js");
 const app = express();
 app.use(cors());
 app.use(express.json());
