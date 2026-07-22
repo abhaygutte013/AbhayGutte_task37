@@ -1,25 +1,36 @@
 import { useState } from "react";
+import { useWorkoutContext } from "../hooks/useWorkoutContext";
 
 function WorkoutForm() {
+  const { dispatch } = useWorkoutContext();
+
   const [title, setTitle] = useState("");
-  const [reps, setReps] = useState("");
   const [load, setLoad] = useState("");
+  const [reps, setReps] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError("");
 
-    if (!title || !reps || !load) {
+    if (!title || !load || !reps) {
       setError("Please fill all fields");
       return;
     }
 
+    if (isNaN(load) || isNaN(reps)) {
+      setError("Load and Reps must be numbers");
+      return;
+    }
+
+    setLoading(true);
+
     const workout = {
       title,
-      reps,
-      load,
+      load: Number(load),
+      reps: Number(reps),
     };
 
     try {
@@ -36,47 +47,56 @@ function WorkoutForm() {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        setError(data.error);
-      } else {
-        setTitle("");
-        setReps("");
-        setLoad("");
-        setError("");
+      if (response.ok) {
+        dispatch({
+          type: "ADD_WORKOUT",
+          payload: data,
+        });
 
-        window.location.reload();
+        setTitle("");
+        setLoad("");
+        setReps("");
+      } else {
+        setError(data.error);
       }
-    } catch (err) {
+    } catch (error) {
       setError("Something went wrong");
     }
+
+    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>Add New Workout</h3>
+      <h3>Add Workout</h3>
 
       <label>Exercise Title</label>
+
       <input
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <label>Reps</label>
-      <input
-        type="number"
-        value={reps}
-        onChange={(e) => setReps(e.target.value)}
-      />
-
       <label>Load (kg)</label>
+
       <input
         type="number"
         value={load}
         onChange={(e) => setLoad(e.target.value)}
       />
 
-      <button>Add Workout</button>
+      <label>Reps</label>
+
+      <input
+        type="number"
+        value={reps}
+        onChange={(e) => setReps(e.target.value)}
+      />
+
+      <button disabled={loading}>
+        {loading ? "Adding..." : "Add Workout"}
+      </button>
 
       {error && <p>{error}</p>}
     </form>
