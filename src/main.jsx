@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "/src/App.jsx";
 import "/src/index.css";
 
-import { WorkoutsContextProvider } from "./context/WorkoutContext";
+import { WorkoutsContextProvider } from "./context/WorkoutContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
