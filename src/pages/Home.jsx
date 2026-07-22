@@ -1,23 +1,34 @@
 import { useEffect } from "react";
-import WorkoutDetails from "../components/Workoutdetails.jsx";
-import WorkoutForm from "../components/WorkoutForm.jsx";
-import useWorkoutContext from "../hooks/useWorkoutContext.js";
+import WorkoutDetails from "../components/WorkoutDetails";
+import WorkoutForm from "../components/WorkoutForm";
+import { useWorkoutContext } from "../hooks/useWorkoutContext";
 
-const Home = () => {
+function Home() {
   const { workouts, dispatch } = useWorkoutContext();
+
   useEffect(() => {
-    const fetchWorkouts = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/workouts`)
-      const json = await response.json();
-      if (response.ok) {
-        dispatch({
-          type: "SET_WORKOUTS",
-          payload: json,
-        });
+    const getWorkouts = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/workouts`
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          dispatch({
+            type: "SET_WORKOUTS",
+            payload: data,
+          });
+        }
+      } catch (error) {
+        console.log("Error fetching workouts");
       }
     };
-    fetchWorkouts();
+
+    getWorkouts();
   }, [dispatch]);
+
   return (
     <div className="home">
       <div className="workouts">
@@ -29,8 +40,10 @@ const Home = () => {
             />
           ))}
       </div>
+
       <WorkoutForm />
     </div>
   );
-};
+}
+
 export default Home;
