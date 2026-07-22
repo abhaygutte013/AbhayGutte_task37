@@ -27,7 +27,7 @@ function WorkoutDetails({ workout }) {
 
   return (
     <div className="workout-details">
-      <h4>{workout.title}</h4>
+      <h3>{workout.title}</h3>
 
       <p>
         <strong>Load:</strong> {workout.load} kg
@@ -35,6 +35,11 @@ function WorkoutDetails({ workout }) {
 
       <p>
         <strong>Reps:</strong> {workout.reps}
+      </p>
+
+      <p>
+        <strong>Created:</strong>{" "}
+        {new Date(workout.createdAt).toLocaleString()}
       </p>
 
       <button onClick={handleDelete}>
