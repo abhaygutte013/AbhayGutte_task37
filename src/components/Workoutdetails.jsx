@@ -1,28 +1,27 @@
+import { useState } from "react";
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
 
-function WorkoutDetails({ workout }) {
+const WorkoutDetails = ({ workout }) => {
   const { dispatch } = useWorkoutContext();
+  const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/workouts/${workout._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+    setLoading(true);
 
-      const data = await response.json();
+    const response = await fetch("/api/workouts/" + workout._id, {
+      method: "DELETE",
+    });
 
-      if (response.ok) {
-        dispatch({
-          type: "DELETE_WORKOUT",
-          payload: data,
-        });
-      }
-    } catch (error) {
-      console.log("Delete failed");
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({
+        type: "DELETE_WORKOUT",
+        payload: json,
+      });
     }
+
+    setLoading(false);
   };
 
   return (
@@ -30,23 +29,24 @@ function WorkoutDetails({ workout }) {
       <h3>{workout.title}</h3>
 
       <p>
-        <strong>Load:</strong> {workout.load} kg
+        <strong>Load :</strong> {workout.load} kg
       </p>
 
       <p>
-        <strong>Reps:</strong> {workout.reps}
+        <strong>Reps :</strong> {workout.reps}
       </p>
 
-      <p>
-        <strong>Created:</strong>{" "}
-        {new Date(workout.createdAt).toLocaleString()}
-      </p>
+      <p>{new Date(workout.createdAt).toLocaleString()}</p>
 
-      <button onClick={handleDelete}>
-        Delete
+      <button
+        className="delete-btn"
+        onClick={handleDelete}
+        disabled={loading}
+      >
+        {loading ? "Deleting..." : "🗑"}
       </button>
     </div>
   );
-}
+};
 
 export default WorkoutDetails;
