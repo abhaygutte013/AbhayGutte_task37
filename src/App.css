@@ -1,74 +1,22 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  background: #f1f1f1;
-}
-
-.App {
-  width: 100%;
-}
-
-header {
-  background: white;
-  padding: 20px 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-header .container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-}
-
-header h1 {
-  color: #2e7d32;
-}
-
 .home {
   width: 90%;
   max-width: 1200px;
   margin: 30px auto;
-  display: grid;
-  grid-template-columns: 3fr 1fr;
+  display: flex;
   gap: 30px;
+  align-items: flex-start;
 }
 
-.workout-details {
-  background: white;
-  border-radius: 6px;
-  padding: 20px;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.workout-details h4 {
-  color: #2e7d32;
-  margin-bottom: 10px;
-}
-
-.workout-details p {
-  margin: 6px 0;
-  color: #555;
-}
-
-.workout-details span {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
-  font-size: 20px;
+.workouts {
+  flex: 2;
 }
 
 .create {
+  flex: 1;
   background: white;
   padding: 20px;
-  border-radius: 6px;
-  height: fit-content;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
 }
 
 .create h3 {
@@ -77,15 +25,16 @@ header h1 {
 
 .create label {
   display: block;
-  margin-bottom: 5px;
   margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .create input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .create button {
@@ -93,30 +42,82 @@ header h1 {
   margin-top: 20px;
   padding: 12px;
   border: none;
-  background: #2e7d32;
+  background: #009578;
   color: white;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .create button:hover {
-  background: #256428;
+  background: #007d66;
+}
+
+.create button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+
+.workout-details {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.workout-details h3 {
+  color: #009578;
+  margin-bottom: 10px;
+}
+
+.workout-details p {
+  margin: 8px 0;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.delete-btn:hover {
+  background: #d63031;
+}
+
+.delete-btn:disabled {
+  background: gray;
+  cursor: not-allowed;
 }
 
 .error {
-  border: 1px solid red !important;
+  border: 2px solid red !important;
 }
 
-.create .error {
+.error-message {
   margin-top: 15px;
   padding: 10px;
-  background: #ffe5e5;
+  background: #ffd6d6;
   color: red;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 @media (max-width: 768px) {
   .home {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .workouts,
+  .create {
+    width: 100%;
   }
 }
