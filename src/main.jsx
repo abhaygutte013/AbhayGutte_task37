@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./index.css";
 import App from "./App";
-import { WorkoutContextProvider } from "./context/WorkoutContext";
+import { WorkoutsContextProvider } from "./context/WorkoutContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <WorkoutContextProvider>
-    <App />
-  </WorkoutContextProvider>
+  <React.StrictMode>
+    <WorkoutsContextProvider>
+      <App />
+    </WorkoutsContextProvider>
+  </React.StrictMode>
 );
