@@ -110,7 +110,24 @@
   color: red;
   border-radius: 5px;
 }
+.buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
 
+.edit-btn {
+  background: #009578;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #007c65;
+}
 @media (max-width: 768px) {
   .home {
     flex-direction: column;
