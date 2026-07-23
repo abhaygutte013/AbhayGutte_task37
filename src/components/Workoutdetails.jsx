@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
 
-const WorkoutDetails = ({ workout }) => {
+const WorkoutDetails = ({ workout, onEdit }) => {
   const { dispatch } = useWorkoutContext();
   const [loading, setLoading] = useState(false);
 
@@ -28,23 +28,28 @@ const WorkoutDetails = ({ workout }) => {
     <div className="workout-details">
       <h3>{workout.title}</h3>
 
-      <p>
-        <strong>Load :</strong> {workout.load} kg
-      </p>
+      <p><strong>Load :</strong> {workout.load} kg</p>
 
-      <p>
-        <strong>Reps :</strong> {workout.reps}
-      </p>
+      <p><strong>Reps :</strong> {workout.reps}</p>
 
       <p>{new Date(workout.createdAt).toLocaleString()}</p>
 
-      <button
-        className="delete-btn"
-        onClick={handleDelete}
-        disabled={loading}
-      >
-        {loading ? "Deleting..." : "🗑"}
-      </button>
+      <div className="buttons">
+        <button
+          className="edit-btn"
+          onClick={() => onEdit(workout)}
+        >
+          Edit
+        </button>
+
+        <button
+          className="delete-btn"
+          onClick={handleDelete}
+          disabled={loading}
+        >
+          {loading ? "..." : "🗑"}
+        </button>
+      </div>
     </div>
   );
 };
