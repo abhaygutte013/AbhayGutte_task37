@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const workoutSchema = new mongoose.Schema(
+const Schema = mongoose.Schema;
+
+const workoutSchema = new Schema(
   {
     title: {
       type: String,
       required: true,
     },
-
     load: {
       type: Number,
       required: true,
     },
-
     reps: {
       type: Number,
       required: true,
@@ -22,4 +22,4 @@ const workoutSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Workout", workoutSchema);
+export default mongoose.model("Workout", workoutSchema);
