@@ -1,10 +1,12 @@
-import { useEffect } from "react";
-import WorkoutDetails from "../components/WorkoutDetails";
+import { useEffect, useState } from "react";
+import WorkoutDetails from "../components/Workoutdetails";
 import WorkoutForm from "../components/WorkoutForm";
 import { useWorkoutContext } from "../hooks/useWorkoutContext";
 
 const Home = () => {
   const { workouts, dispatch } = useWorkoutContext();
+
+  const [editWorkout, setEditWorkout] = useState(null);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -30,11 +32,15 @@ const Home = () => {
             <WorkoutDetails
               key={workout._id}
               workout={workout}
+              onEdit={setEditWorkout}
             />
           ))}
       </div>
 
-      <WorkoutForm />
+      <WorkoutForm
+        editWorkout={editWorkout}
+        setEditWorkout={setEditWorkout}
+      />
     </div>
   );
 };
