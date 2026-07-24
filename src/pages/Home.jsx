@@ -1,46 +1,59 @@
 import { useEffect, useState } from "react";
 import WorkoutDetails from "../components/Workoutdetails";
 import WorkoutForm from "../components/WorkoutForm";
-import { useWorkoutContext } from "../hooks/useWorkoutContext";
+import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+
+const API = import.meta.env.VITE_API_URL;
 
 const Home = () => {
-  const { workouts, dispatch } = useWorkoutContext();
+  const { workouts, dispatch } = useWorkoutsContext();
 
-  const [editWorkout, setEditWorkout] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchWorkouts = async () => {
-      const response = await fetch("/api/workouts");
-      const json = await response.json();
+    const getWorkouts = async () => {
+      setLoading(true);
 
-      if (response.ok) {
-        dispatch({
-          type: "SET_WORKOUTS",
-          payload: json,
-        });
+      try {
+        const response = await fetch(API);
+        const json = await response.json();
+
+        if (response.ok) {
+          dispatch({
+            type: "SET_WORKOUTS",
+            payload: json,
+          });
+        }
+
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
       }
     };
 
-    fetchWorkouts();
+    getWorkouts();
   }, [dispatch]);
 
   return (
     <div className="home">
       <div className="workouts">
-        {workouts &&
-          workouts.map((workout) => (
-            <WorkoutDetails
-              key={workout._id}
-              workout={workout}
-              onEdit={setEditWorkout}
-            />
-          ))}
+        {loading ? (
+          <h3>Loading workouts...</h3>
+        ) : (
+          workouts &&
+          workouts.map((workout) => {
+            return (
+              <WorkoutDetails
+                key={workout._id}
+                workout={workout}
+              />
+            );
+          })
+        )}
       </div>
 
-      <WorkoutForm
-        editWorkout={editWorkout}
-        setEditWorkout={setEditWorkout}
-      />
+      <WorkoutForm />
     </div>
   );
 };
