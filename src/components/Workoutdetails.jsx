@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 const API = import.meta.env.VITE_API_URL;
+fetch(API);
 
 const WorkoutDetails = ({ workout }) => {
   const { dispatch } = useWorkoutsContext();
