@@ -1,60 +1,63 @@
-import mongoose from "mongoose";
 import Workout from "../models/workoutModel.js";
+import mongoose from "mongoose";
 
 // Get all workouts
 export const getWorkouts = async (req, res) => {
-  const workouts = await Workout.find().sort({ createdAt: -1 });
+  try {
+    const workouts = await Workout.find().sort({ createdAt: -1 });
 
-  res.status(200).json(workouts);
+    res.status(200).json(workouts);
+  } catch (err) {
+    res.status(500).json({
+      error: "Unable to get workouts",
+    });
+  }
 };
 
 // Get one workout
 export const getWorkout = async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Workout not found" });
+    return res.status(404).json({
+      error: "Workout not found",
+    });
   }
 
-  const workout = await Workout.findById(id);
+  try {
+    const workout = await Workout.findById(id);
 
-  if (!workout) {
-    return res.status(404).json({ error: "Workout not found" });
+    if (!workout) {
+      return res.status(404).json({
+        error: "Workout not found",
+      });
+    }
+
+    res.status(200).json(workout);
+  } catch (err) {
+    res.status(500).json({
+      error: "Server Error",
+    });
   }
-
-  res.status(200).json(workout);
 };
 
 // Create workout
 export const createWorkout = async (req, res) => {
-  const { title, load, reps } = req.body;
+  const title = req.body.title;
+  const load = req.body.load;
+  const reps = req.body.reps;
 
-  let emptyFields = [];
-
-  if (!title) {
-    emptyFields.push("title");
-  }
-
-  if (!load) {
-    emptyFields.push("load");
-  }
-
-  if (!reps) {
-    emptyFields.push("reps");
-  }
-
-  if (emptyFields.length > 0) {
+  if (!title || !load || !reps) {
     return res.status(400).json({
-      error: "Please fill all the fields",
-      emptyFields,
+      error: "Please fill all fields",
     });
   }
 
   try {
     const workout = await Workout.create({
-      title,
-      load,
-      reps,
+      title: title,
+      load: load,
+      reps: reps,
     });
 
     res.status(200).json(workout);
@@ -67,36 +70,68 @@ export const createWorkout = async (req, res) => {
 
 // Delete workout
 export const deleteWorkout = async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Workout not found" });
+    return res.status(404).json({
+      error: "Workout not found",
+    });
   }
 
-  const workout = await Workout.findByIdAndDelete(id);
+  try {
+    const workout = await Workout.findByIdAndDelete(id);
 
-  if (!workout) {
-    return res.status(404).json({ error: "Workout not found" });
+    if (!workout) {
+      return res.status(404).json({
+        error: "Workout not found",
+      });
+    }
+
+    res.status(200).json(workout);
+  } catch (err) {
+    res.status(500).json({
+      error: "Delete failed",
+    });
   }
-
-  res.status(200).json(workout);
 };
 
 // Update workout
 export const updateWorkout = async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Workout not found" });
+    return res.status(404).json({
+      error: "Workout not found",
+    });
   }
 
-  const workout = await Workout.findByIdAndUpdate(id, req.body, {
-    new: true,
-  });
+  const title = req.body.title;
+  const load = req.body.load;
+  const reps = req.body.reps;
 
-  if (!workout) {
-    return res.status(404).json({ error: "Workout not found" });
+  try {
+    const workout = await Workout.findByIdAndUpdate(
+      id,
+      {
+        title: title,
+        load: load,
+        reps: reps,
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!workout) {
+      return res.status(404).json({
+        error: "Workout not found",
+      });
+    }
+
+    res.status(200).json(workout);
+  } catch (err) {
+    res.status(400).json({
+      error: err.message,
+    });
   }
-
-  res.status(200).json(workout);
 };
