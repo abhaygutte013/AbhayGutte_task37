@@ -1,8 +1,8 @@
 import { createContext, useReducer } from "react";
 
-export const WorkoutsContext = createContext();
+export const WorkoutContext = createContext();
 
-export const workoutsReducer = (state, action) => {
+const workoutReducer = (state, action) => {
   switch (action.type) {
     case "SET_WORKOUTS":
       return {
@@ -15,17 +15,25 @@ export const workoutsReducer = (state, action) => {
       };
 
     case "DELETE_WORKOUT":
+      const newWorkouts = state.workouts.filter(function (item) {
+        return item._id !== action.payload._id;
+      });
+
       return {
-        workouts: state.workouts.filter(
-          (workout) => workout._id !== action.payload._id
-        ),
+        workouts: newWorkouts,
       };
 
     case "UPDATE_WORKOUT":
+      const updatedWorkouts = state.workouts.map(function (item) {
+        if (item._id === action.payload._id) {
+          return action.payload;
+        }
+
+        return item;
+      });
+
       return {
-        workouts: state.workouts.map((workout) =>
-          workout._id === action.payload._id ? action.payload : workout
-        ),
+        workouts: updatedWorkouts,
       };
 
     default:
@@ -33,14 +41,19 @@ export const workoutsReducer = (state, action) => {
   }
 };
 
-export const WorkoutsContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(workoutsReducer, {
+export const WorkoutContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(workoutReducer, {
     workouts: [],
   });
 
   return (
-    <WorkoutsContext.Provider value={{ ...state, dispatch }}>
+    <WorkoutContext.Provider
+      value={{
+        workouts: state.workouts,
+        dispatch: dispatch,
+      }}
+    >
       {children}
-    </WorkoutsContext.Provider>
+    </WorkoutContext.Provider>
   );
 };
