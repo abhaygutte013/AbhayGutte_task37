@@ -1,55 +1,58 @@
 import { useState } from "react";
-import { useWorkoutContext } from "../hooks/useWorkoutContext";
+import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
-const WorkoutDetails = ({ workout, onEdit }) => {
-  const { dispatch } = useWorkoutContext();
+const API = import.meta.env.VITE_API_URL;
+
+const WorkoutDetails = ({ workout }) => {
+  const { dispatch } = useWorkoutsContext();
+
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
 
-    const response = await fetch("/api/workouts/" + workout._id, {
-      method: "DELETE",
-    });
-
-    const json = await response.json();
-
-    if (response.ok) {
-      dispatch({
-        type: "DELETE_WORKOUT",
-        payload: json,
+    try {
+      const response = await fetch(API + "/" + workout._id, {
+        method: "DELETE",
       });
-    }
 
-    setLoading(false);
+      const json = await response.json();
+
+      if (response.ok) {
+        dispatch({
+          type: "DELETE_WORKOUT",
+          payload: json,
+        });
+      }
+
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
   };
+
+  const date = new Date(workout.createdAt);
 
   return (
     <div className="workout-details">
-      <h3>{workout.title}</h3>
+      <h4>{workout.title}</h4>
 
-      <p><strong>Load :</strong> {workout.load} kg</p>
+      <p>
+        <strong>Load (kg): </strong>
+        {workout.load}
+      </p>
 
-      <p><strong>Reps :</strong> {workout.reps}</p>
+      <p>
+        <strong>Reps: </strong>
+        {workout.reps}
+      </p>
 
-      <p>{new Date(workout.createdAt).toLocaleString()}</p>
+      <p>{date.toLocaleString()}</p>
 
-      <div className="buttons">
-        <button
-          className="edit-btn"
-          onClick={() => onEdit(workout)}
-        >
-          Edit
-        </button>
-
-        <button
-          className="delete-btn"
-          onClick={handleDelete}
-          disabled={loading}
-        >
-          {loading ? "..." : "🗑"}
-        </button>
-      </div>
+      <button onClick={handleDelete} disabled={loading}>
+        {loading ? "Deleting..." : "Delete"}
+      </button>
     </div>
   );
 };
